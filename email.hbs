@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Statuses</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
+</head>
+<body>
+    <header>
+        <h1>Inventory</h1>
+    </header>
+
+    <table class="table table-bordered table-dark">
+        <thead>
+            <tr>
+                <th scope="col" class="text-left">#</th>
+                <th scope="col" class="text-left">Webstite</th>
+                <th scope="col" class="text-left">Availability</th>
+                <th scope="col" class="text-left">URL</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each statuses}}
+            {{#if this.availability}}
+            <tr class="bg-success">
+            {{else}}
+            <tr class="bg-danger"></tr>
+            {{/if}}
+                <th scope="row">{{@index}}</th>
+                <td>
+                    {{this.name}}
+                </td>
+                    {{#if this.availability}}
+                    <td>In Stock! Check Website!</td>
+                    {{else}}
+                    <td>Out of Stock</td>
+                    {{/if}}
+                <td>
+                    {{this.url}}
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+<script href="bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

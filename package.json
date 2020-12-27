@@ -1,0 +1,29 @@
+{
+  "name": "inventory-scraper",
+  "version": "1.0.0",
+  "description": "Scraper for certain products including xbox, ps5, and graphical cards",
+  "main": "scraper.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shodges201/Inventory-Scraper.git"
+  },
+  "author": "Scott Hodges",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shodges201/Inventory-Scraper/issues"
+  },
+  "homepage": "https://github.com/shodges201/Inventory-Scraper#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.5",
+    "cron": "^1.8.2",
+    "dotenv": "^8.2.0",
+    "fs": "0.0.1-security",
+    "handlebars": "^4.7.6",
+    "nodemailer": "^6.4.17",
+    "path": "^0.12.7",
+    "puppeteer": "^5.5.0"
+  }
+}
