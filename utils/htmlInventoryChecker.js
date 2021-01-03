@@ -1,22 +1,23 @@
 const cheerio = require("cheerio");
+const logger = require("./../logger/logger.js");
 
 const checkNewEggHtml = (html) => {
     try{
       if(html === null){
-        console.error("new egg html was null");
+        logger.error("new egg html was null");
         return false;
       }
       const $ = cheerio.load(html);
-      console.debug("new egg status: " + $(".product-inventory").children("strong").text());
+      logger.debug("new egg status: " + $(".product-inventory").children("strong").text());
       let inStock = $(".product-inventory").children("strong").text().trim().includes("In stock.");
       if(inStock == null){
         inStock = false;
       }
-      console.debug("newegg is in stock: " + inStock);
+      logger.debug("newegg is in stock: " + inStock);
       return inStock;
     }
     catch(err){
-      console.error("error with newegg parsing" + err);
+      logger.error("error with newegg parsing" + err);
       return false;
     }
 }
@@ -24,6 +25,7 @@ const checkNewEggHtml = (html) => {
 const checkWalmartHtml = (html) => {
     try{
       if(html === null){
+        logger.error("walmart html was null");
         return false;
       }
       const $ = cheerio.load(html);
@@ -32,11 +34,11 @@ const checkWalmartHtml = (html) => {
       if(inStock == null){
         inStock = false;
       }
-      console.debug("walmart is in stock: " + inStock);
+      logger.debug("walmart is in stock: " + inStock);
       return inStock;
     }
     catch(err){
-      console.error("error with walmart parsing" + err);
+      logger.error("error with walmart parsing" + err);
       return false;
     }
 }
@@ -44,27 +46,35 @@ const checkWalmartHtml = (html) => {
   
 const checkGameStopHtml = (html) => {
     try{
+      if(html === null){
+        logger.error("game stop html was null");
+        return false;
+      }
       const $ = cheerio.load(html);
       const productJsonData = JSON.parse($(".add-to-cart").attr("data-gtmdata"));
       const inStock = productJsonData.productInfo.availability === "Available";
-      console.log("game stop is in stock: " + inStock);
+      logger.log("game stop is in stock: " + inStock);
       return inStock;
     }
     catch(err){
-      console.error("error with game stop parsing " + err);
+      logger.error("error with game stop parsing " + err);
       return false;
     }
 }
   
 const checkBestBuyHtml = (html) => {
     try{
+      if(html === null){
+        logger.error("best buy html was null");
+        return false;
+      }
       const $ = cheerio.load(html);
       const inStock = !$(".add-to-cart-button").attr("disabled");
-      console.debug("best buy is in stock: " + inStock);
+      logger.debug("best buy is in stock: " + inStock);
       return inStock;
     }
     catch(err){
-      console.error("error with best buy parsing " + err);
+      logger.error("error with best buy parsing " + err);
       return false;
     }
 }

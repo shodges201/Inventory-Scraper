@@ -1,5 +1,6 @@
 const path = require("path");
 const nodemailer = require("nodemailer");
+const logger = require("./../logger/logger.js");
 
 const initMailer = () => {
     const mailer = nodemailer.createTransport({
@@ -15,7 +16,6 @@ const initMailer = () => {
 }
 
 const sendMail = async (recipients, subject, emailHtml) => {
-    console.log("params", recipients, subject, emailHtml);
     try{
         const mailer = initMailer();
         let info = await mailer.sendMail({        
@@ -27,7 +27,7 @@ const sendMail = async (recipients, subject, emailHtml) => {
         return true;
     }
     catch(error){
-        console.error("mailing error", error);
+        logger.error("mailing error", error);
         return false;
     }
 }
