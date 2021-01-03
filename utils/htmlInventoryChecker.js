@@ -3,16 +3,16 @@ const cheerio = require("cheerio");
 const checkNewEggHtml = (html) => {
     try{
       if(html === null){
-        console.log("new egg html was null");
+        console.error("new egg html was null");
         return false;
       }
       const $ = cheerio.load(html);
-      console.log("new egg status: " + $(".product-inventory").children("strong").text());
+      console.debug("new egg status: " + $(".product-inventory").children("strong").text());
       let inStock = $(".product-inventory").children("strong").text().trim().includes("In stock.");
       if(inStock == null){
         inStock = false;
       }
-      console.log("newegg is in stock: " + inStock);
+      console.debug("newegg is in stock: " + inStock);
       return inStock;
     }
     catch(err){
@@ -32,7 +32,7 @@ const checkWalmartHtml = (html) => {
       if(inStock == null){
         inStock = false;
       }
-      console.log("walmart is in stock: " + inStock);
+      console.debug("walmart is in stock: " + inStock);
       return inStock;
     }
     catch(err){
@@ -60,7 +60,7 @@ const checkBestBuyHtml = (html) => {
     try{
       const $ = cheerio.load(html);
       const inStock = !$(".add-to-cart-button").attr("disabled");
-      console.log("best buy is in stock: " + inStock);
+      console.debug("best buy is in stock: " + inStock);
       return inStock;
     }
     catch(err){

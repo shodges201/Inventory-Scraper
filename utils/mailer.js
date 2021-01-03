@@ -2,8 +2,6 @@ const path = require("path");
 const nodemailer = require("nodemailer");
 
 const initMailer = () => {
-    console.log(path.join(__dirname,"/../config/.env"));
-    console.log("config: ", process.env.smtpHost, process.env.email, process.env.emailPassword);
     const mailer = nodemailer.createTransport({
         host: process.env.smtpHost,
         port: 587,
@@ -29,7 +27,7 @@ const sendMail = async (recipients, subject, emailHtml) => {
         return true;
     }
     catch(error){
-        console.log("mailing error", error);
+        console.error("mailing error", error);
         return false;
     }
 }

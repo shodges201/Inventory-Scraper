@@ -21,7 +21,27 @@
             </tr>
         </thead>
         <tbody>
-            {{#each statuses}}
+            {{#each xbox.statuses}}
+            {{#if this.availability}}
+            <tr class="bg-success">
+            {{else}}
+            <tr class="bg-danger"></tr>
+            {{/if}}
+                <th scope="row">{{@index}}</th>
+                <td>
+                    {{this.name}}
+                </td>
+                    {{#if this.availability}}
+                    <td>In Stock! Check Website!</td>
+                    {{else}}
+                    <td>Out of Stock</td>
+                    {{/if}}
+                <td>
+                    {{this.url}}
+                </td>
+            </tr>
+            {{/each}}
+            {{#each ps5.statuses}}
             {{#if this.availability}}
             <tr class="bg-success">
             {{else}}

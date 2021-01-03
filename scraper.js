@@ -3,33 +3,51 @@ const handlebars = require("handlebars");
 const path = require("path");
 const CronJob = require("cron").CronJob;
 const { sendMail } = require("./utils/mailer");
-const { getXboxStatuses } = require("./statusRetrievers/xboxStatus");
+const { getStatuses } = require("./statusRetrievers/xboxStatus");
 require("dotenv").config();
 
 const filePath = path.join(__dirname, "/views/email.hbs");
 const recipients = "shodges201@gmail.com, b.hodges1055.bh@gmail.com";
 const subject = "Inventory Check";
+const jsonFileLocations = {
+  xbox: "xbox/urls.json",
+  ps5: "ps5/urls.json"
+}
 
 const job = new CronJob('0 */1 * * * *', async() => {
   console.log("starting");
-  const xboxStatuses = await getXboxStatuses();
+  const statuses = resultsObjectFactory();
+  const xboxStatuses = await getStatuses(jsonFileLocations.xbox);
+  const ps5Statuses = await getStatuses(jsonFileLocations.ps5);
+  statuses.xbox = xboxStatuses;
+  statuses.ps5 = ps5Statuses;
   let inStock = false;
   // check if anything is in stock
   // if there is no stock, don't send an email
-  xboxStatuses.statuses.forEach((item, index) => {
+  statuses.xbox.statuses.forEach((item, index) => {
+    inStock = inStock || item.availability;
+  });
+  statuses.ps5.statuses.forEach((item, index) => {
     inStock = inStock || item.availability;
   });
   if(inStock){
-    const emailHtml = formatStatuses(xboxStatuses);
-    console.log("email html: " + emailHtml);
+    const emailHtml = formatStatuses(statuses);
+    console.debug("email html: " + emailHtml);
     await sendMail(recipients, subject, emailHtml);
   }
   else{
-    console.log("There was no stock available so no email was sent");
+    console.debug("There was no stock available so no email was sent");
   }
 });
 
 job.start();
+
+function resultsObjectFactory(){
+  return {
+    xbox: null,
+    ps5: null
+  }
+}
 
 function formatStatuses(statuses){
   const source = fs.readFileSync(filePath, 'utf-8').toString();

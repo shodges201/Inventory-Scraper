@@ -8,51 +8,55 @@ const bestBuyIndex = 1;
 const gameStopIndex = 2;
 const neweggIndex = 3;
 
-async function getXboxStatuses(){
-    const rawdata = fs.readFileSync(path.join(__dirname, '/../urls/xbox-urls.json'));
-    const xboxUrls = JSON.parse(rawdata);
+/**
+ * 
+ * @param {string} path 
+ */
+async function getStatuses(filePath){
+    const rawdata = fs.readFileSync(path.join(__dirname, `/../urls/${filePath}`));
+    const urls = JSON.parse(rawdata);
   
     //initial statuses array to be used for handlebars
-    xboxStatuses = xboxStatusFactory(xboxUrls);
+    xboxStatuses = statusFactory(urls);
 
     //keep indexes for easy
-    const bestBuyHtml = await getHtml(xboxUrls.bestBuy);
-    const gameStopHtml = await getHtml(xboxUrls.gameStop);
-    const walmartHtml = await getHtml(xboxUrls.walmart);
-    const neweggHtml = await getHtml(xboxUrls.newegg);
+    const bestBuyHtml = await getHtml(urls.bestBuy);
+    const gameStopHtml = await getHtml(urls.gameStop);
+    const walmartHtml = await getHtml(urls.walmart);
+    const neweggHtml = await getHtml(urls.newegg);
     xboxStatuses.statuses[bestBuyIndex].availability = checkBestBuyHtml(bestBuyHtml);
     xboxStatuses.statuses[gameStopIndex].availability = checkGameStopHtml(gameStopHtml);
     xboxStatuses.statuses[walmartIndex].availability = checkWalmartHtml(walmartHtml);
     xboxStatuses.statuses[neweggIndex].availability = checkNewEggHtml(neweggHtml);
-    console.log("finished querying pages" + JSON.stringify(xboxStatuses));
+    console.debug("finished querying pages" + JSON.stringify(xboxStatuses));
     return xboxStatuses;
 }
 
-const xboxStatusFactory = (xboxUrls) => {
+const statusFactory = (urls) => {
     //initial statuses array to be used for handlebars
     return {
       statuses: [
       {
         name: "walmart",
         availability: null,
-        url: xboxUrls.walmart
+        url: urls.walmart
       },
       {
         name: "Best Buy",
         availability: null,
-        url: xboxUrls.bestBuy
+        url: urls.bestBuy
       },
       {
         name: "GameStop",
         availability: null,
-        url: xboxUrls.gameStop
+        url: urls.gameStop
       },
       {
         name: "Newegg",
         availability: null,
-        url: xboxUrls.newegg
+        url: urls.newegg
       }
     ]};
 }
 
-exports.getXboxStatuses = getXboxStatuses;
+exports.getStatuses = getStatuses;

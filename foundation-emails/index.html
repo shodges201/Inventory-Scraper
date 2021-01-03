@@ -13,42 +13,39 @@
     <tr>
       <td class="float-center" align="center" valign="top">
         <center>
-          <header>
-            <h1>Inventory</h1>
-        </header>
-    
-        <table class="table table-bordered table-dark">
-            <thead>
-                <tr>
-                    <th scope="col" class="text-left">#</th>
-                    <th scope="col" class="text-left">Webstite</th>
-                    <th scope="col" class="text-left">Availability</th>
-                    <th scope="col" class="text-left">URL</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each statuses}}
-                {{#if this.availability}}
-                <tr class="bg-success">
-                {{else}}
-                <tr class="bg-danger"></tr>
-                {{/if}}
-                    <th scope="row">{{@index}}</th>
-                    <td>
-                        {{this.name}}
-                    </td>
-                        {{#if this.availability}}
-                        <td>In Stock! Check Website!</td>
-                        {{else}}
-                        <td>Out of Stock</td>
-                        {{/if}}
-                    <td>
-                        {{this.url}}
-                    </td>
-                </tr>
-                {{/each}}
-            </tbody>
-        </table>
+
+        <table class="container">
+        <thead>
+            <tr>
+                <th scope="col" class="text-left">#</th>
+                <th scope="col" class="text-left">Webstite</th>
+                <th scope="col" class="text-left">Availability</th>
+                <th scope="col" class="text-left">URL</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each statuses}}
+            {{#if this.availability}}
+            <tr class="bg-success">
+            {{else}}
+            <tr class="bg-danger"></tr>
+            {{/if}}
+                <th scope="row">{{@index}}</th>
+                <td>
+                    {{this.name}}
+                </td>
+                    {{#if this.availability}}
+                    <td>In Stock! Check Website!</td>
+                    {{else}}
+                    <td>Out of Stock</td>
+                    {{/if}}
+                <td>
+                    {{this.url}}
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
         </center>
       </td>
     </tr>
