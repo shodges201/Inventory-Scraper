@@ -2,6 +2,8 @@ const { Command } = require('commander');
 const program = new Command();
 const logger = require("./../logger/logger.js");
 
+const delimeter = ",";
+
 function parseArguments(){
     program.version('0.0.1');
     const defaultProductsSet = new Set();
@@ -9,11 +11,11 @@ function parseArguments(){
     defaultProductsSet.add("xbox");
     let products = new Set();
     program.option('-p --products <products>', 
-                   'Specify the products seperated by semicolons without a trailing semicolon on the end. Allowed values are "ps5" and "xbox" currently.')
+                   'Specify the products seperated by commas without a trailing comma on the end. Allowed values are "ps5" and "xbox" currently.')
     .parse(process.argv);
     console.log(program.opts());
     if(program.products){
-        const productsList = program.products.split(";");
+        const productsList = program.products.split(delimeter);
         productsList.forEach((product) => {
             product = product.trim().toLowerCase();
             if(!defaultProductsSet.has(product)){

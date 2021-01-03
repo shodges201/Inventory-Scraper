@@ -3,7 +3,7 @@ const handlebars = require("handlebars");
 const path = require("path");
 const CronJob = require("cron").CronJob;
 const { sendMail } = require("./utils/mailer");
-const { getStatuses } = require("./statusRetrievers/xboxStatus");
+const { getStatuses } = require("./statusRetrievers/statusRetriever");
 require("dotenv").config();
 const logger = require("./logger/logger.js");
 const { parseArguments } = require("./command-line/parser.js");
