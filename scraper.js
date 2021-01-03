@@ -9,15 +9,14 @@ const logger = require("./logger/logger.js");
 const { parseArguments } = require("./command-line/parser.js");
 
 const filePath = path.join(__dirname, "/views/email.hbs");
-const recipients = "shodges201@gmail.com, b.hodges1055.bh@gmail.com";
 const subject = "Inventory Check";
 const jsonFileLocations = {
   xbox: "xbox/urls.json",
   ps5: "ps5/urls.json"
 }
 
-function createCronJob(productsToCheck) {
-  const job = new CronJob('0 */1 * * * *', async() => {
+function createCronJob(productsToCheck, recipients, refresh) {
+  const job = new CronJob(`0 */${refresh} * * * *`, async() => {
     logger.debug("starting job");
     let inStock = false;
     const statuses = resultsObjectFactory();
@@ -49,9 +48,9 @@ function createCronJob(productsToCheck) {
 }
 
 (() => {
-  const products = parseArguments();
-  const job = createCronJob(products);
-  job.start(products);
+  const args = parseArguments();
+  const job = createCronJob(args.products, args.emailRecipients, args.refresh);
+  job.start();
 })();
 
 function resultsObjectFactory(){
