@@ -1,19 +1,20 @@
 const puppeteer = require("puppeteer");
+const logger = require("./../logger/logger.js");
 
 const getHtml = async (url) => {
-    console.log("fetching url " + url);
+    logger.debug("fetching url " + url);
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     page.setJavaScriptEnabled(true);
     page.setBypassCSP(true);
     page.on("pageerror", err => {
-      console.error("page error: " + err);
+      logger.warn("page error: " + err);
     })
     page.on("requestfailed", req => {
-      console.error("request failed");
+      logger.warn("Request failure while fetching HTML. Most likely an issue with a fetch the page does itself");
     })
     page.on("error", err => {
-      console.error("There was an error: " + err);
+      logger.warn("There was an error: " + err);
     })
   
     await page.setExtraHTTPHeaders({
@@ -31,8 +32,7 @@ const getHtml = async (url) => {
       return html;
     }
     catch(err){
-      console.log("there was an error that was caught");
-      console.log(err);
+      logger.error("there was an error while fetching the html", err);
       await page.close();
       await browser.close();
       return null;

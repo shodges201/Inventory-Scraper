@@ -27,6 +27,7 @@
     "nodemailer": "^6.4.17",
     "path": "^0.12.7",
     "puppeteer": "^5.5.0",
-    "scraper.js": "^4.0.0-alpha.7"
+    "scraper.js": "^4.0.0-alpha.7",
+    "winston": "^3.3.3"
   }
 }

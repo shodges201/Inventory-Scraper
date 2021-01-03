@@ -5,6 +5,7 @@ const CronJob = require("cron").CronJob;
 const { sendMail } = require("./utils/mailer");
 const { getStatuses } = require("./statusRetrievers/xboxStatus");
 require("dotenv").config();
+const logger = require("./logger/logger.js");
 
 const filePath = path.join(__dirname, "/views/email.hbs");
 const recipients = "shodges201@gmail.com, b.hodges1055.bh@gmail.com";
@@ -15,7 +16,7 @@ const jsonFileLocations = {
 }
 
 const job = new CronJob('0 */1 * * * *', async() => {
-  console.log("starting");
+  logger.debug("starting job");
   const statuses = resultsObjectFactory();
   const xboxStatuses = await getStatuses(jsonFileLocations.xbox);
   const ps5Statuses = await getStatuses(jsonFileLocations.ps5);
@@ -36,7 +37,7 @@ const job = new CronJob('0 */1 * * * *', async() => {
     await sendMail(recipients, subject, emailHtml);
   }
   else{
-    console.debug("There was no stock available so no email was sent");
+    logger.debug("There was no stock available so no email was sent");
   }
 });
 

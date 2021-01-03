@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const { getHtml } = require("./../utils/request");
 const {checkBestBuyHtml, checkGameStopHtml, checkNewEggHtml, checkWalmartHtml} = require("./../utils/htmlInventoryChecker");
+const logger = require("./../logger/logger.js");
 
 const walmartIndex = 0;
 const bestBuyIndex = 1;
@@ -28,7 +29,7 @@ async function getStatuses(filePath){
     xboxStatuses.statuses[gameStopIndex].availability = checkGameStopHtml(gameStopHtml);
     xboxStatuses.statuses[walmartIndex].availability = checkWalmartHtml(walmartHtml);
     xboxStatuses.statuses[neweggIndex].availability = checkNewEggHtml(neweggHtml);
-    console.debug("finished querying pages" + JSON.stringify(xboxStatuses));
+    logger.debug("finished querying pages" + JSON.stringify(xboxStatuses));
     return xboxStatuses;
 }
 
