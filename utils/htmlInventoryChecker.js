@@ -53,7 +53,7 @@ const checkGameStopHtml = (html) => {
       const $ = cheerio.load(html);
       const productJsonData = JSON.parse($(".add-to-cart").attr("data-gtmdata"));
       const inStock = productJsonData.productInfo.availability === "Available";
-      logger.log("game stop is in stock: " + inStock);
+      logger.debug("game stop is in stock: " + inStock);
       return inStock;
     }
     catch(err){

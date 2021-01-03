@@ -3,45 +3,55 @@ const handlebars = require("handlebars");
 const path = require("path");
 const CronJob = require("cron").CronJob;
 const { sendMail } = require("./utils/mailer");
-const { getStatuses } = require("./statusRetrievers/xboxStatus");
+const { getStatuses } = require("./statusRetrievers/statusRetriever");
 require("dotenv").config();
 const logger = require("./logger/logger.js");
+const { parseArguments } = require("./command-line/parser.js");
 
 const filePath = path.join(__dirname, "/views/email.hbs");
-const recipients = "shodges201@gmail.com, b.hodges1055.bh@gmail.com";
 const subject = "Inventory Check";
 const jsonFileLocations = {
   xbox: "xbox/urls.json",
   ps5: "ps5/urls.json"
 }
 
-const job = new CronJob('0 */1 * * * *', async() => {
-  logger.debug("starting job");
-  const statuses = resultsObjectFactory();
-  const xboxStatuses = await getStatuses(jsonFileLocations.xbox);
-  const ps5Statuses = await getStatuses(jsonFileLocations.ps5);
-  statuses.xbox = xboxStatuses;
-  statuses.ps5 = ps5Statuses;
-  let inStock = false;
-  // check if anything is in stock
-  // if there is no stock, don't send an email
-  statuses.xbox.statuses.forEach((item, index) => {
-    inStock = inStock || item.availability;
-  });
-  statuses.ps5.statuses.forEach((item, index) => {
-    inStock = inStock || item.availability;
-  });
-  if(inStock){
-    const emailHtml = formatStatuses(statuses);
-    console.debug("email html: " + emailHtml);
-    await sendMail(recipients, subject, emailHtml);
-  }
-  else{
-    logger.debug("There was no stock available so no email was sent");
-  }
-});
+function createCronJob(productsToCheck, recipients, refresh) {
+  const job = new CronJob(`0 */${refresh} * * * *`, async() => {
+    logger.debug("starting job");
+    let inStock = false;
+    const statuses = resultsObjectFactory();
+    if(productsToCheck.has("xbox")){
+      const xboxStatuses = await getStatuses(jsonFileLocations.xbox);
+      statuses.xbox = xboxStatuses;
+      statuses.xbox.statuses.forEach((item, index) => {
+        inStock = inStock || item.availability;
+      });
+    }
+    if(productsToCheck.has("ps5")){
+      const ps5Statuses = await getStatuses(jsonFileLocations.ps5);
+      statuses.ps5 = ps5Statuses;
+      statuses.ps5.statuses.forEach((item, index) => {
+        inStock = inStock || item.availability;
+      });
+    }
 
-job.start();
+    if(inStock){
+      const emailHtml = formatStatuses(statuses);
+      console.debug("email html: " + emailHtml);
+      await sendMail(recipients, subject, emailHtml);
+    }
+    else{
+      logger.debug("There was no stock available so no email was sent");
+    }
+  });
+  return job;
+}
+
+(() => {
+  const args = parseArguments();
+  const job = createCronJob(args.products, args.emailRecipients, args.refresh);
+  job.start();
+})();
 
 function resultsObjectFactory(){
   return {

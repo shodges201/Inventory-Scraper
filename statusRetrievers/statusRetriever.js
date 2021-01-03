@@ -1,8 +1,8 @@
 const fs = require("fs");
 const path = require("path");
-const { getHtml } = require("./../utils/request");
-const {checkBestBuyHtml, checkGameStopHtml, checkNewEggHtml, checkWalmartHtml} = require("./../utils/htmlInventoryChecker");
-const logger = require("./../logger/logger.js");
+const { getHtml } = require("../utils/request");
+const {checkBestBuyHtml, checkGameStopHtml, checkNewEggHtml, checkWalmartHtml} = require("../utils/htmlInventoryChecker");
+const logger = require("../logger/logger.js");
 
 const walmartIndex = 0;
 const bestBuyIndex = 1;
