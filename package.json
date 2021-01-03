@@ -19,6 +19,7 @@
   "homepage": "https://github.com/shodges201/Inventory-Scraper#readme",
   "dependencies": {
     "cheerio": "^1.0.0-rc.5",
+    "commander": "^6.2.1",
     "cron": "^1.8.2",
     "dotenv": "^8.2.0",
     "fs": "0.0.1-security",
