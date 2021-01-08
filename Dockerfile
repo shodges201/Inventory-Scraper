@@ -38,4 +38,4 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-CMD [ "node", "scraper.js", "-e", "shodges201@gmail.com,b.hodges1055.bh@gmail.com", "-r", "1" ]
+CMD [ "node", "scraper.js"]

@@ -1,3 +1,6 @@
 email=
 emailPassword=
 smtpHost=
+products=
+recipients=
+refresh=

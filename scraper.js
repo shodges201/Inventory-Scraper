@@ -6,7 +6,7 @@ const { sendMail } = require("./utils/mailer");
 const { getStatuses } = require("./statusRetrievers/statusRetriever");
 require("dotenv").config();
 const logger = require("./logger/logger.js");
-const { parseArguments } = require("./command-line/parser.js");
+const { parseProducts, parseRecipients, parseRefresh } = require("./arg-parsing/parser.js");
 
 const filePath = path.join(__dirname, "/views/email.hbs");
 const subject = "Inventory Check";
@@ -48,8 +48,10 @@ function createCronJob(productsToCheck, recipients, refresh) {
 }
 
 (() => {
-  const args = parseArguments();
-  const job = createCronJob(args.products, args.emailRecipients, args.refresh);
+  const products = parseProducts(process.env.products);
+  const recipients = parseRecipients(process.env.recipients);
+  const refresh = parseRefresh(process.env.refresh);
+  const job = createCronJob(products, recipients, refresh);
   job.start();
 })();
 
