@@ -3,7 +3,10 @@ const logger = require("./../logger/logger.js");
 
 const getHtml = async (url) => {
     logger.debug("fetching url " + url);
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox']
+    });
     const page = await browser.newPage();
     page.setJavaScriptEnabled(true);
     page.setBypassCSP(true);
