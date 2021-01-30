@@ -6,7 +6,7 @@ const { sendMail } = require("./utils/mailer");
 const { getStatuses } = require("./statusRetrievers/statusRetriever");
 require("dotenv").config();
 const logger = require("./logger/logger.js");
-const { parseProducts, parseRecipients, parseRefresh } = require("./arg-parsing/parser.js");
+const { parseProducts, parseRecipients, parseRefresh } = require("./env-parsing/parser.js");
 
 const filePath = path.join(__dirname, "/views/email.hbs");
 const subject = "Inventory Check";
@@ -23,14 +23,14 @@ function createCronJob(productsToCheck, recipients, refresh) {
     if(productsToCheck.has("xbox")){
       const xboxStatuses = await getStatuses(jsonFileLocations.xbox);
       statuses.xbox = xboxStatuses;
-      statuses.xbox.statuses.forEach((item, index) => {
+      statuses.xbox.statuses.forEach((item) => {
         inStock = inStock || item.availability;
       });
     }
     if(productsToCheck.has("ps5")){
       const ps5Statuses = await getStatuses(jsonFileLocations.ps5);
       statuses.ps5 = ps5Statuses;
-      statuses.ps5.statuses.forEach((item, index) => {
+      statuses.ps5.statuses.forEach((item) => {
         inStock = inStock || item.availability;
       });
     }
