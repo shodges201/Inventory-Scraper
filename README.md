@@ -24,8 +24,9 @@ The .env file is vital to running the script either way. Take the .sample-env fi
 * refresh: The number of minutes between checks for supply. 
 
 #### Command Line
-Running the script on the command line after creating the .env file is as easy as running the following command from the command line with node.js installed.
-`node scraper.js`
+Running the script on the command line after creating the .env file is as easy as running the following  from the command line with node.js installed:
+* Install the scripts dependencies using `npm i`
+* Run the script using either `npm start`
 
 #### Docker
 The following commands can be run to create a docker image of the script.
@@ -35,8 +36,9 @@ Afterwards the following command can be run to create a Docker container from th
 Then the container can be run using the following command.
 `docker start <characters from above>`
 ### Supported products currently
-*  PS5
+* PS5
 * Xbox Series X
+### Planned future products
 * GeForce RTX 3000 series (Coming Soon)
 * Ryzen 7 series(Coming soon)
 * Ryzen 9 series (Coming soon)
@@ -45,5 +47,6 @@ Then the container can be run using the following command.
 * Walmart
 * Gamestop
 * Best Buy
+### Planned Future suppliers
 * Target (Coming Soon)
 * Amazon (Coming Soon)

@@ -1,7 +1,16 @@
 const fs = require("fs");
 const path = require("path");
 const { getHtml } = require("../utils/request");
-const {checkBestBuyHtml, checkGameStopHtml, checkNewEggHtml, checkWalmartHtml} = require("../utils/htmlInventoryChecker");
+const {
+        checkBestBuyInventoryHtml, 
+        checkGameStopInventoryHtml, 
+        checkNewEggInventoryHtml, 
+        checkWalmartInventoryHtml,
+        checkBestBuyPriceHtml, 
+        checkGameStopPriceHtml, 
+        checkNewEggPriceHtml,
+        checkWalmartPriceHtml
+      } = require("../utils/htmlInventoryChecker");
 const logger = require("../logger/logger.js");
 
 const walmartIndex = 0;
@@ -26,10 +35,17 @@ async function getStatuses(filePath){
     const gameStopHtml = await getHtml(urls.gameStop);
     const walmartHtml = await getHtml(urls.walmart);
     const neweggHtml = await getHtml(urls.newegg);
-    inventoryStatuses.statuses[bestBuyIndex].availability = checkBestBuyHtml(bestBuyHtml);
-    inventoryStatuses.statuses[gameStopIndex].availability = checkGameStopHtml(gameStopHtml);
-    inventoryStatuses.statuses[walmartIndex].availability = checkWalmartHtml(walmartHtml);
-    inventoryStatuses.statuses[neweggIndex].availability = checkNewEggHtml(neweggHtml);
+    // check html for inventory status
+    inventoryStatuses.statuses[bestBuyIndex].availability = checkBestBuyInventoryHtml(bestBuyHtml);
+    inventoryStatuses.statuses[gameStopIndex].availability = checkGameStopInventoryHtml(gameStopHtml);
+    inventoryStatuses.statuses[walmartIndex].availability = checkWalmartInventoryHtml(walmartHtml);
+    inventoryStatuses.statuses[neweggIndex].availability = checkNewEggInventoryHtml(neweggHtml);
+    // check html for price
+    inventoryStatuses.statuses[bestBuyIndex].price = checkBestBuyPriceHtml(bestBuyHtml);
+    inventoryStatuses.statuses[gameStopIndex].price = checkGameStopPriceHtml(gameStopHtml);
+    inventoryStatuses.statuses[walmartIndex].price = checkWalmartPriceHtml(walmartHtml);
+    inventoryStatuses.statuses[neweggIndex].price = checkNewEggPriceHtml(neweggHtml);
+
     logger.debug("finished querying pages" + JSON.stringify(inventoryStatuses));
     return inventoryStatuses;
 }
@@ -44,24 +60,28 @@ const statusFactory = (urls) => {
     return {
       statuses: [
       {
-        name: "walmart",
+        name: "Walmart",
         availability: null,
-        url: urls.walmart
+        url: urls.walmart,
+        price: null
       },
       {
         name: "Best Buy",
         availability: null,
-        url: urls.bestBuy
+        url: urls.bestBuy,
+        price: null
       },
       {
         name: "GameStop",
         availability: null,
-        url: urls.gameStop
+        url: urls.gameStop,
+        price: null
       },
       {
         name: "Newegg",
         availability: null,
-        url: urls.newegg
+        url: urls.newegg,
+        price: null
       }
     ]};
 }
