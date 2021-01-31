@@ -26,7 +26,7 @@ The .env file is vital to running the script either way. Take the .sample-env fi
 #### Command Line
 Running the script on the command line after creating the .env file is as easy as running the following  from the command line with node.js installed:
 * Install the scripts dependencies using `npm i`
-* Run the script using either `npm start`
+* Run the script using `npm start`
 
 #### Docker
 The following commands can be run to create a docker image of the script.
