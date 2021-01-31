@@ -4,7 +4,9 @@ const { combine, timestamp, printf } = format;
 const logFormat = printf(({ level, message, timestamp }) => {
     return `${timestamp} ${level}: ${message}`;
   });
-
+/**
+ * Creates a logger with the lowest level of logging set to debug and will print the logger to both the console and to a rolling file
+ */
 const logger = createLogger({
     level: 'debug',
     transports: [

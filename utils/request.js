@@ -1,6 +1,10 @@
 const puppeteer = require("puppeteer");
 const logger = require("./../logger/logger.js");
 
+/**
+ * Uses puppeteer to get the HTML of a product page and returns the raw html
+ * @param {url} url An http(s) url where a product page is located
+ */
 const getHtml = async (url) => {
     logger.debug("fetching url " + url);
     const browser = await puppeteer.launch({
@@ -12,9 +16,6 @@ const getHtml = async (url) => {
     page.setBypassCSP(true);
     page.on("pageerror", err => {
       logger.warn("page error: " + err);
-    })
-    page.on("requestfailed", req => {
-      logger.warn("Request failure while fetching HTML. Most likely an issue with a fetch the page does itself");
     })
     page.on("error", err => {
       logger.warn("There was an error: " + err);
